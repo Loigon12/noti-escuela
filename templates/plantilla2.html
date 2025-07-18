@@ -1,35 +1,249 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Blog Verde - Cuidando la Naturaleza</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Iniciar Sesión - Noti-Escuela</title>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --gray: #e2e8f0;
+      --text: #1e293b;
+      --shadow: rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .auth-container {
+      background-color: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px var(--shadow);
+      overflow: hidden;
+      max-width: 500px;
+      width: 100%;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--gray);
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      position: relative;
+      color: var(--primary);
+    }
+
+    .tab.active {
+      background-color: var(--primary);
+      color: var(--white);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      height: 3px;
+      width: 100%;
+      background-color: var(--white);
+    }
+
+    .form-container {
+      padding: 2rem 1.5rem;
+    }
+
+    .form-container h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary-dark);
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--gray);
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    .form-group button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-group button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .toggle-link {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .toggle-link a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .tabs {
+        flex-direction: column;
+      }
+
+      .tab {
+        border-bottom: 1px solid var(--gray);
+      }
+
+      .tab:last-child {
+        border-bottom: none;
+      }
+    }
+  </style>
 </head>
-<body class="bg-success bg-opacity-10">
-    <div class="container py-4">
-        <h1 class="text-center mb-5">🌿 Blog Verde - Noticias y Consejos Ecológicos</h1>
+<body>
 
-        <div class="card mb-4">
-            <div class="card-body">
-                <h4 class="card-title">Reducir el uso del plástico</h4>
-                <p class="card-text">Descubre cómo puedes reducir tu huella ambiental evitando plásticos de un solo uso en casa y oficina.</p>
-            </div>
-        </div>
-
-        <div class="card mb-4">
-            <div class="card-body">
-                <h4 class="card-title">Cultiva tu propio huerto</h4>
-                <p class="card-text">Aprende los beneficios de tener un huerto urbano y cómo comenzar desde cero en espacios pequeños.</p>
-            </div>
-        </div>
-
-        <div class="card mb-4">
-            <div class="card-body">
-                <h4 class="card-title">La importancia de los árboles</h4>
-                <p class="card-text">Los árboles no solo dan sombra. Te contamos por qué son vitales para el planeta.</p>
-            </div>
-        </div>
+  <div class="auth-container">
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(this, 'login')">Iniciar Sesión</div>
+      <div class="tab" onclick="switchTab(this, 'register')">Registrarse</div>
     </div>
-    <a href="{{ url_for('home') }}" class="btn btn-primary">Volver</a>
+
+    <div class="form-container" id="login">
+      <h2>Inicia sesión</h2>
+      <form>
+        <div class="form-group">
+          <label for="email-login">Correo electrónico</label>
+          <input type="email" id="email-login" placeholder="tu@correo.com" required />
+        </div>
+        <div class="form-group">
+          <label for="password-login">Contraseña</label>
+          <input type="password" id="password-login" placeholder="••••••••" required />
+        </div>
+        <div class="form-group">
+          <button type="submit">Entrar</button>
+        </div>
+      </form>
+      <div class="toggle-link">
+        ¿No tienes cuenta? <a href="#" onclick="switchToRegister()">Regístrate</a>
+      </div>
+    </div>
+
+    <div class="form-container" id="register" style="display:none;">
+      <h2>Crea tu cuenta</h2>
+      <form>
+        <div class="form-group">
+          <label for="name-register">Nombre completo</label>
+          <input type="text" id="name-register" placeholder="Nombre Apellido" required />
+        </div>
+        <div class="form-group">
+          <label for="email-register">Correo electrónico</label>
+          <input type="email" id="email-register" placeholder="tu@correo.com" required />
+        </div>
+        <div class="form-group">
+          <label for="password-register">Contraseña</label>
+          <input type="password" id="password-register" placeholder="••••••••" required />
+        </div>
+        <div class="form-group">
+          <label for="role-register">Rol</label>
+          <select id="role-register" required>
+            <option value="">Selecciona tu rol</option>
+            <option value="padre">Padre de familia</option>
+            <option value="docente">Docente</option>
+            <option value="administrativo">Administrativo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button type="submit">Registrarse</button>
+        </div>
+      </form>
+      <div class="toggle-link">
+        ¿Ya tienes cuenta? <a href="#" onclick="switchToLogin()">Inicia sesión</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tab, id) {
+      const tabs = document.querySelectorAll('.tab');
+      const forms = document.querySelectorAll('.form-container');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      forms.forEach(f => f.style.display = 'none');
+
+      tab.classList.add('active');
+      document.getElementById(id).style.display = 'block';
+    }
+
+    function switchToRegister() {
+      switchTab(document.querySelectorAll('.tab')[1], 'register');
+    }
+
+    function switchToLogin() {
+      switchTab(document.querySelectorAll('.tab')[0], 'login');
+    }
+  </script>
+
 </body>
 </html>
