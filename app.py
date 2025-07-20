@@ -61,11 +61,11 @@ def inicio():
 
 @app.route('/productos')
 def productos():
-    return render_template('plantilla1.html')
+    return render_template('ingreso.html')
 
 @app.route('/servicios')
 def servicios():
-    return render_template('plantilla2.html')
+    return render_template('reuniones.html')
 
 @app.route('/ventas')
 def ventas():
