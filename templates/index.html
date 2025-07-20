@@ -4,8 +4,250 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Noti-Escuela - Plataforma Educativa</title>
-  <link href="css/styleIndex.css">
 </head>
+<style>
+   :root {
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --accent: #bfdbfe;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --gray: #e2e8f0;
+      --text: #1e293b;
+      --shadow: rgba(0, 0, 0, 0.05);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--white);
+      padding: 2rem 3rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px var(--shadow);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-top: 0.5rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      background: var(--white);
+      left: 0;
+      bottom: -4px;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      background: linear-gradient(120deg, var(--primary), var(--accent));
+      padding: 4rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      color: var(--text);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2), transparent 70%);
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+    }
+
+    .hero h2 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero .btn {
+      display: inline-block;
+      background-color: var(--primary-dark);
+      color: var(--white);
+      padding: 0.8rem 1.6rem;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .hero .btn:hover {
+      background-color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .hero-image {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      text-align: right;
+    }
+
+    .hero-image img {
+      max-width: 300px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transition: transform 0.4s ease;
+    }
+
+    .hero-image img:hover {
+      transform: rotate(-2deg) scale(1.03);
+    }
+
+    .section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section h2 {
+      font-size: 2.2rem;
+      color: var(--primary-dark);
+      margin-bottom: 2.5rem;
+      text-align: center;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background-color: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+      padding: 1.8rem;
+      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 0.6rem;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    footer {
+      background-color: var(--primary-dark);
+      color: var(--white);
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      margin-top: 4rem;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    /* Animaciones */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .hero-image {
+        margin-top: 2rem;
+        text-align: center;
+      }
+
+      .hero-image img {
+        max-width: 250px;
+      }
+    }
+</style>
 <body>
 
   <header>
@@ -13,10 +255,10 @@
     <p>Plataforma Educativa Informativa</p>
     <nav>
       <a href="#">Inicio</a>
-      <a href="#">Noticias</a>
+      <a href="reuniones.html">Noticias</a>
       <a href="#">Eventos</a>
       <a href="#">Comunicados</a>
-      <a href="#">Contacto</a>
+      <a href="ingreso.html">Ingreso</a>
     </nav>
   </header>
 
