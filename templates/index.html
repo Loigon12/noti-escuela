@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Noti-Escuela - Plataforma Educativa</title>
-</head>
-<style>
-   :root {
+  <style>
+    :root {
       --primary: #3b82f6;
       --primary-dark: #2563eb;
       --accent: #bfdbfe;
@@ -35,43 +34,29 @@
     header {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: var(--white);
-       padding: 1rem 2.5rem; /* Menos espacio vertical */
+      padding: 0.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 20px var(--shadow);
-      height: 80px; /* Altura fija reducida */
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      animation: fadeInDown 0.8s ease-out;
-    }
-
-    header p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      margin-top: 0.5rem;
-    }
-
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 2.5rem;
-      margin-top: 1.5rem;
-      flex-wrap: wrap;
-      padding: 10px;
+      height: 60px;
+      box-shadow: 0 4px 12px var(--shadow);
     }
 
     header img {
-      height: 100px; /* Tamaño pequeño del logo */
-      margin-right: 1rem;
+      height: 40px;
       transition: transform 0.3s ease;
     }
 
     header img:hover {
       transform: scale(1.05);
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
     }
 
     nav a {
@@ -80,6 +65,7 @@
       font-weight: 500;
       position: relative;
       transition: var(--transition);
+      font-size: 0.95rem;
     }
 
     nav a::after {
@@ -97,20 +83,26 @@
       width: 100%;
     }
 
-    /* Responsive: Alinear elementos verticalmente en pantallas pequeñas */
-    @media (max-width: 600px) {
+    /* Responsive */
+    @media (max-width: 768px) {
       header {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        height: auto;
       }
 
       nav {
-        margin-top: 1rem;
-        justify-content: flex-start;
+        flex-direction: column;
+        align-items: flex-start;
         width: 100%;
+        margin-top: 0.5rem;
+        gap: 0.75rem;
       }
     }
 
+    /* Hero Section */
     .hero {
       padding: 4rem 2rem;
       display: flex;
@@ -193,7 +185,6 @@
       color: var(--primary-dark);
       margin-bottom: 2.5rem;
       text-align: center;
-      animation: fadeInUp 0.8s ease-out;
     }
 
     .cards {
@@ -242,7 +233,6 @@
       text-align: center;
       padding: 2.5rem 1.5rem;
       margin-top: 4rem;
-      animation: fadeInUp 1s ease-out;
     }
 
     /* Animaciones */
@@ -272,11 +262,12 @@
         max-width: 250px;
       }
     }
-</style>
+  </style>
+</head>
 <body>
 
   <header>
-    <img src="static/img/noti-escuela-logo.png" alt="Logo">
+    <img src="static/img/noti-escuela-logo.png" alt="Logo Noti-Escuela">
     <nav>
       <a href="#">Inicio</a>
       <a href="reuniones.html">Noticias</a>
