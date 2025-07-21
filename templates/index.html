@@ -62,6 +62,16 @@
       flex-wrap: wrap;
     }
 
+    header img {
+      height: 40px; /* Tamaño pequeño del logo */
+      margin-right: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    header img:hover {
+      transform: scale(1.05);
+    }
+
     nav a {
       color: var(--white);
       text-decoration: none;
@@ -85,11 +95,22 @@
       width: 100%;
     }
 
+    /* Responsive: Alinear elementos verticalmente en pantallas pequeñas */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        margin-top: 1rem;
+        justify-content: flex-start;
+        width: 100%;
+      }
+    }
+
     .hero {
       padding: 4rem 2rem;
-      background-image: url(static/img/pexels-pixabay-273239.jpg);
-      background-size: cover; /* La imagen cubre toda la pantalla */
-      background-repeat: no-repeat; /* No repetir la imagen */
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -253,8 +274,7 @@
 <body>
 
   <header>
-    <h1>Noti-Escuela</h1>
-    <p>Plataforma Educativa Informativa</p>
+    <img src="static/img/noti-escuela-logo.png" alt="Logo">
     <nav>
       <a href="#">Inicio</a>
       <a href="reuniones.html">Noticias</a>
