@@ -31,7 +31,7 @@
       line-height: 1.7;
     }
 
-    header {
+    nav {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: var(--white);
       padding: 0.5rem 2rem;
@@ -45,16 +45,22 @@
       box-shadow: 0 4px 12px var(--shadow);
     }
 
-    header img {
+    nav .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    nav img {
       height: 40px;
+      margin-right: 1rem;
       transition: transform 0.3s ease;
     }
 
-    header img:hover {
+    nav img:hover {
       transform: scale(1.05);
     }
 
-    nav {
+    nav .menu {
       display: flex;
       gap: 1.5rem;
     }
@@ -85,15 +91,16 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      header {
+      nav {
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         padding: 0.5rem 1rem;
         height: auto;
+        flex-wrap: wrap;
       }
 
-      nav {
+      nav .menu {
         flex-direction: column;
         align-items: flex-start;
         width: 100%;
@@ -234,48 +241,22 @@
       padding: 2.5rem 1.5rem;
       margin-top: 4rem;
     }
-
-    /* Animaciones */
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .hero-image {
-        margin-top: 2rem;
-        text-align: center;
-      }
-
-      .hero-image img {
-        max-width: 250px;
-      }
-    }
   </style>
 </head>
 <body>
 
-  <header>
-    <img src="static/img/noti-escuela-logo.png" alt="Logo Noti-Escuela">
-    <nav>
+  <nav>
+    <div class="logo">
+      <img src="static/img/noti-escuela-logo.png" alt="Logo Noti-Escuela">
+    </div>
+    <div class="menu">
       <a href="#">Inicio</a>
       <a href="reuniones.html">Noticias</a>
       <a href="#">Eventos</a>
       <a href="#">Comunicados</a>
       <a href="ingreso.html">Ingreso</a>
-    </nav>
-  </header>
+    </div>
+  </nav>
 
   <section class="hero">
     <div class="hero-content">
