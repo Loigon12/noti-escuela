@@ -61,7 +61,7 @@ def inicio():
 
 @app.route('/productos')
 def productos():
-    return render_template('ingreso.html')
+    return render_template("ingreso.html")
 
 @app.route('/servicios')
 def servicios():
