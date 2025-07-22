@@ -55,22 +55,13 @@ admin.add_view(ModelView(Producto, db.session))
 def home():
     return render_template("index.html")
 
-@app.route("/inicio/")
-def inicio():
-    return render_template("index.html")
+@app.route("/noticias")
+def noticias():
+    return render_template("reuniones.html")
 
-@app.route('/productos')
-def productos():
+@app.route("/ingreso")
+def ingreso():
     return render_template("ingreso.html")
-
-@app.route('/servicios')
-def servicios():
-    return render_template('reuniones.html')
-
-@app.route('/ventas')
-def ventas():
-    productos = Producto.query.all()
-    return render_template('ventas.html', productos=productos)
 
 if __name__ == '__main__':
     app.run(debug=True)
