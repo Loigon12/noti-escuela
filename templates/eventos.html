@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eventos - Noti-Escuela</title>
+
+  <!-- Google Fonts: Poppins para elegancia y modernidad -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --accent: #dbeafe;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --gray: #e2e8f0;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.07);
+      --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.1);
+      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* Encabezado de sección */
+    .events-header {
+      text-align: center;
+      padding: 3rem 1.5rem 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--white);
+      border-radius: 0 0 20px 20px;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .events-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 150%;
+      height: 150%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+      transform: rotate(30deg);
+      z-index: 0;
+    }
+
+    .events-header h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .events-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Contenedor principal */
+    .events-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Grid de eventos */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+      padding: 2rem 0;
+    }
+
+    /* Tarjeta de evento */
+    .event-card {
+      background: var(--white);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--gray);
+    }
+
+    .event-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+
+    /* Imagen animada */
+    .event-image {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .event-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .event-card:hover .event-image img {
+      transform: scale(1.15) rotate(2deg);
+    }
+
+    /* Etiqueta de categoría */
+    .event-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: var(--primary-dark);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Contenido del evento */
+    .event-content {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .event-content h3 {
+      font-size: 1.3rem;
+      color: var(--primary-dark);
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+    }
+
+    .event-content .date {
+      font-size: 0.95rem;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .event-content .location {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 1rem;
+    }
+
+    .event-content p {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 1.2rem;
+      flex-grow: 1;
+    }
+
+    .event-content .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .event-content .btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    /* Footer elegante */
+    footer {
+      background: linear-gradient(135deg, var(--primary-dark), #1e40af);
+      color: var(--white);
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      margin-top: 4rem;
+      font-size: 0.95rem;
+    }
+
+    footer p {
+      opacity: 0.9;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .events-header h2 {
+        font-size: 2.2rem;
+      }
+
+      .events-grid {
+        gap: 1.8rem;
+      }
+
+      .event-card {
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Encabezado de eventos -->
+  <section class="events-header">
+    <h2>📅 Próximos Eventos Escolares</h2>
+    <p>Descubre las actividades, reuniones y celebraciones que tenemos preparadas para la comunidad educativa.</p>
+  </section>
+
+  <!-- Contenedor de eventos -->
+  <div class="events-container">
+    <div class="events-grid">
+
+      <!-- Evento 1 -->
+      <div class="event-card">
+        <div class="event-image">
+          <img src="https://picsum.photos/id/1015/600/400" alt="Jornada de convivencia">
+          <div class="event-tag">Familiar</div>
+        </div>
+        <div class="event-content">
+          <h3>Jornada de convivencia familiar</h3>
+          <div class="date">📅 Lunes, 13 de Enero de 2025 | 09:00 - 14:00 hrs</div>
+          <div class="location">📍 Patio principal - Escuela Benito Juárez</div>
+          <p>Actividades lúdicas, juegos en familia y almuerzo comunitario. ¡Todos los padres y estudiantes están invitados!</p>
+          <a href="#" class="btn">Más información</a>
+        </div>
+      </div>
+
+      <!-- Evento 2 -->
+      <div class="event-card">
+        <div class="event-image">
+          <img src="https://picsum.photos/id/1018/600/400" alt="Exámenes parciales">
+          <div class="event-tag">Académico</div>
+        </div>
+        <div class="event-content">
+          <h3>Exámenes del primer parcial</h3>
+          <div class="date">📅 Martes, 21 de Enero de 2025 | 08:00 - 12:00 hrs</div>
+          <div class="location">📍 Aulas - Todos los grados</div>
+          <p>Inicio de evaluaciones del primer trimestre. Recuerda revisar el cronograma por grado en el tablón digital.</p>
+          <a href="#" class="btn">Ver cronograma</a>
+        </div>
+      </div>
+
+      <!-- Evento 3 -->
+      <div class="event-card">
+        <div class="event-image">
+          <img src="https://picsum.photos/id/1025/600/400" alt="Día del maestro">
+          <div class="event-tag">Celebración</div>
+        </div>
+        <div class="event-content">
+          <h3>Día del Maestro</h3>
+          <div class="date">📅 Miércoles, 15 de Mayo de 2025 | 10:00 hrs</div>
+          <div class="location">📍 Auditorio principal</div>
+          <p>Celebración especial en honor a nuestros docentes. Participación de estudiantes con presentaciones artísticas.</p>
+          <a href="#" class="btn">Confirmar asistencia</a>
+        </div>
+      </div>
+
+      <!-- Evento 4 -->
+      <div class="event-card">
+        <div class="event-image">
+          <img src="https://picsum.photos/id/1039/600/400" alt="Taller de robótica">
+          <div class="event-tag">Taller</div>
+        </div>
+        <div class="event-content">
+          <h3>Taller de robótica para estudiantes</h3>
+          <div class="date">📅 Sábados, del 1 al 22 de Febrero 2025</div>
+          <div class="location">📍 Laboratorio de Tecnología</div>
+          <p>Inscríbete con tu profesor. Dirigido a estudiantes de 4° a 6° grado. ¡Aprende a construir y programar robots!</p>
+          <a href="#" class="btn">Inscribirse</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Noti-Escuela - Todos los derechos reservados</p>
+    <p>Fortaleciendo la comunidad educativa con información clara y oportuna.</p>
+  </footer>
+
+</body>
+</html>
