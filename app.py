@@ -64,7 +64,7 @@ def ingreso():
     return render_template("ingreso.html")
 
 @app.route("/eventos")
-def ingreso():
+def eventos():
     return render_template("eventos.html")
 
 if __name__ == '__main__':
