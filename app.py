@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_admin import AdminIndexView
 import os
 
 # Crear la app Flask
@@ -23,6 +24,12 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
 
 db = SQLAlchemy(app)
 
+class MyAdminIndexView(AdminIndexView):
+    def is_accesible(self):
+        return session.get("admin_logged_in")
+    
+    def inaccesible_callback(self, name, **kwargs):
+        return redirect(url_for("login"))
 # Modelos
 class Categoria(db.Model):
     __tablename__ = 'categorias'
@@ -66,6 +73,24 @@ def ingreso():
 @app.route("/eventos")
 def eventos():
     return render_template("eventos.html")
+@app.route( '`/admin/login', methods=["GET", "POST"] )
+def admin_login():
+    username =  request.form["username"]
+    password = request.form["password"]
+    
+    user = Usuario.query.filter_by(nom_usuario=username, password=password).first()
+    
+    if user:
+        session["admin_logged_in"] = True
+        return redirect("/admin")
+    else:
+        error = "Usuario o Contraseña incorrectos"
+        
+    return render_template("login.html", error = error)
+@app.route( "/admin/logout" )
+def admin_logout():
+    session.pop("admin_logged_in", None)
+    return redirect(url_for("login"))
 
 if __name__ == '__main__':
     app.run(debug=True)
