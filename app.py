@@ -181,7 +181,7 @@ def ventas():
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
-    error = None
+    error= None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -192,7 +192,7 @@ def admin_login():
             session['admin_logged_in'] = True
             return redirect('/admin')
         else:
-            error = 'Usuario o contraseña incorrectos'
+            error= 'Usuario o contraseña incorrectos'
     
     return render_template('admin_login.html')
 @app.route('/admin/logout')
