@@ -6,7 +6,6 @@ class Categoria(db.Model):
     __tablename__ = 'categorias'
     id_categoria = db.Column(db.Integer, primary_key=True)
     nom_categoria = db.Column(db.String(100), nullable=False)
-    productos = db.relationship('Producto', backref='categoria', lazy=True)
 
 class Producto(db.Model):
     __tablename__ = 'productos'
@@ -22,4 +21,5 @@ class Usuario(db.Model):
     id_ud_usuario = db.Column(db.Integer, primary_key=True)
     nom_usuario = db.Column(db.String(50), nullable=False)
     ape_usuario = db.Column(db.String(50), nullable=False)
-    pasword = db.Column(db.String(128))
+    username = db.Column(db.String(50), unique=True, nullable=False)  # usuario de login
+    password = db.Column(db.String(128), nullable=False)
