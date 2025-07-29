@@ -162,7 +162,7 @@ def inicio():
 
 @app.route("/eventos")
 def eventos():
-    return render_template("plantilla1.html")
+    return render_template("eventos.html")
 
 @app.route("/comunicados")
 def comunicados():
@@ -171,6 +171,11 @@ def comunicados():
 @app.route("/ingreso")
 def ingreso():
     return render_template("ingreso.html")
+
+@app.route("/reuniones")
+def reuniones():
+    return render_template("reuniones.html")
+
 
 @app.route('/ventas')
 def ventas():
@@ -198,10 +203,6 @@ def admin_logout():
     session.pop('admin_logged_in', None)
     return redirect(url_for('admin_login'))
 
-
     
 if __name__ == '__main__':
-    wait_for_postgres()
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)
