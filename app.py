@@ -235,9 +235,9 @@ def admin_login():
     error = None
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']
+        pasword = request.form['password']
 
-        user = Usuario.query.filter_by(username=username, password=password).first()
+        user = Usuario.query.filter_by(username=username, pasword=pasword).first()
 
         if user:
             session['admin_logged_in'] = True
@@ -257,14 +257,14 @@ def admin_logout():
 def procesar_login():
     data = request.get_json()
     username = data.get('username')
-    password = data.get('password')
+    pasword = data.get('pasword')
 
     # Opcional: hash de la contraseña (si la guardaste con hash)
     # password_hash = hashlib.sha256(password.encode()).hexdigest()
-    password_hash = password  # Solo para pruebas. Usa hash en producción.
+    password_hash = pasword  # Solo para pruebas. Usa hash en producción.
 
     # Buscar usuario
-    usuario = Usuario.query.filter_by(username=username, password=password).first()
+    usuario = Usuario.query.filter_by(username=username, password=pasword).first()
 
     if usuario:
         return jsonify({'success': True, 'message': 'Inicio de sesión exitoso', 'rol': usuario.rol})
