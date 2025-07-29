@@ -170,10 +170,6 @@ def eventos():
 def comunicados():
     return render_template("comunicados.html")
 
-@app.route("/ingreso")
-def ingreso():
-    return render_template("ingreso.html")
-
 @app.route("/reuniones")
 def reuniones():
     return render_template("reuniones.html")
@@ -241,6 +237,29 @@ def admin_logout():
     session.pop('admin_logged_in', None)
     return redirect(url_for('admin_login'))
 
-    
+
+# Ruta para procesar el login
+@app.route('/ingreso', methods=['POST'])
+def procesar_login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    # Opcional: hash de la contraseña (si la guardaste con hash)
+    # password_hash = hashlib.sha256(password.encode()).hexdigest()
+    password_hash = password  # Solo para pruebas. Usa hash en producción.
+
+    # Buscar usuario
+    usuario = Usuario.query.filter_by(username=username, password=password).first()
+
+    if usuario:
+        return jsonify({'success': True, 'message': 'Inicio de sesión exitoso', 'rol': usuario.rol})
+    else:
+        return jsonify({'success': False, 'message': 'Usuario o contraseña incorrectos'})
+
+# Ruta de bienvenida (ejemplo de redirección)
+@app.route('/dashboard')
+def dashboard():
+    return "<h1>Bienvenido al sistema</h1><p>Has iniciado sesión correctamente.</p><a href='/'>← Volver</a>"
 if __name__ == '__main__':
     app.run(debug=True)
