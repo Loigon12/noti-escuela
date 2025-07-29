@@ -11,45 +11,51 @@ from wtforms.fields import SelectField
 import time
 import psycopg2
 
-# Esperar a que PostgreSQL esté listo
-def wait_for_postgres():
-    while True:
-        try:
-            conn = psycopg2.connect(
-                host="db",
-                database="Tienda1",
-                user="postgres",
-                password="PODIUM2025"
-            )
-            conn.close()
-            print("✅ PostgreSQL está listo")
-            break
-        except psycopg2.OperationalError:
-            print("⏳ Esperando a PostgreSQL...")
-            time.sleep(2)
-
 # Crear la app Flask
 app = Flask(__name__)
-app.secret_key = 'PODIUM2025'
+app.secret_key = os.getenv('SECRET_KEY', 'PODIUM2025')
+database_url = os.getenv('DATABASE_URL')
+if not database_url:
+    # Fallback local
+    database_url = 'postgresql://postgres:PODIUM2025@localhost/Tienda1'
 
-# Configuración de la base de datos
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:PODIUM2025@db/Tienda1'
+# 2) Configura SQLAlchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
 
-# Inicializar SQLAlchemy
+# 3) Fuerza SSL/TLS (ojo: necesario solo si tu URL no incluye sslmode)
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'connect_args': {'sslmode': 'disable'}
+}
+
 db = SQLAlchemy(app)
 
+class MyAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+        return session.get('admin_logged_in')
 
-# ===== DEFINICIÓN DE MODELOS (ÚNICA VEZ, DESPUÉS DE db) =====
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('admin_login'))
 
+# Vista protegida para cada modelo
+class SecureModelView(ModelView):
+    def is_accessible(self):
+        return session.get('admin_logged_in')
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('admin_login'))
+    def render(self, template, **kwargs):
+        # Agrega el botón de logout en la esquina superior derecha
+        kwargs['logout_button'] = Markup('<a class="btn btn-danger" href="/admin/logout">Cerrar sesión</a>')
+        return super().render(template, **kwargs)
+
+# Modelos
+class UsuarioAdmin(ModelView):
+    form_columns = ['nom_usuario', 'ape_usuario', 'username', 'password']
 class Categoria(db.Model):
     __tablename__ = 'categorias'
     id_categoria = db.Column(db.Integer, primary_key=True)
     nom_categoria = db.Column(db.String(100), nullable=False)
-    # Relación: una categoría tiene muchos productos
-    productos = db.relationship('Producto', backref='categoria', lazy=True)
-
 
 class Producto(db.Model):
     __tablename__ = 'productos'
@@ -59,56 +65,36 @@ class Producto(db.Model):
     imagen = db.Column(db.String(200))
     precio = db.Column(db.Float, nullable=False)
     id_categoria = db.Column(db.Integer, db.ForeignKey('categorias.id_categoria'), nullable=False)
-    # No es necesario definir 'categoria' aquí: lo maneja backref
-
+    categoria = db.relationship('Categoria', backref='productos')
 
 class Usuario(db.Model):
     __tablename__ = 'usuarios'
     id_ud_usuario = db.Column(db.Integer, primary_key=True)
     nom_usuario = db.Column(db.String(50), nullable=False)
     ape_usuario = db.Column(db.String(50), nullable=False)
-    username = db.Column(db.String(50), unique=True, nullable=False)
+    username = db.Column(db.String(50), unique=True, nullable=False)  # usuario de login
     password = db.Column(db.String(128), nullable=False)
-
-
-# ===== CONFIGURACIÓN DE ADMIN (Flask-Admin) =====
-
-class MyAdminIndexView(AdminIndexView):
-    def is_accessible(self):
-        return session.get('admin_logged_in')
-
-    def inaccessible_callback(self, name, **kwargs):
-        return redirect(url_for('admin_login'))
-
-
-class SecureModelView(ModelView):
-    def is_accessible(self):
-        return session.get('admin_logged_in')
-
-    def inaccessible_callback(self, name, **kwargs):
-        return redirect(url_for('admin_login'))
-
-    def render(self, template, **kwargs):
-        kwargs['logout_button'] = Markup('<a class="btn btn-danger" href="/admin/logout">Cerrar sesión</a>')
-        return super().render(template, **kwargs)
-
-
-class UsuarioAdmin(ModelView):
-    form_columns = ['nom_usuario', 'ape_usuario', 'username', 'password']
-
-
+    
 class ProductoAdmin(ModelView):
+    # Personaliza el campo imagen para que permita subir archivos
     form_extra_fields = {
         'imagen': ImageUploadField('Imagen del producto',
             base_path=os.path.join(os.getcwd(), 'static', 'uploads'),
             relative_path='uploads/',
             url_relative_path='static/uploads/')
     }
-
     form_overrides = {
         'id_categoria': SelectField
     }
 
+    form_columns = ['nombre', 'descripcion', 'imagen', 'precio', 'id_categoria']
+
+    # Sobrescribimos el tipo de campo
+    form_overrides = {
+        'id_categoria': SelectField
+    }
+
+    # Configuramos el comportamiento del SelectField
     form_args = {
         'id_categoria': {
             'coerce': int,
@@ -116,28 +102,25 @@ class ProductoAdmin(ModelView):
         }
     }
 
-    form_columns = ['nombre', 'descripcion', 'imagen', 'precio', 'id_categoria']
-
+    # Llenamos las opciones para el campo select (crear)
     def create_form(self, obj=None):
         form = super().create_form(obj)
         form.id_categoria.choices = [(c.id_categoria, c.nom_categoria) for c in Categoria.query.all()]
         return form
 
+    # Llenamos las opciones para el campo select (editar)
     def edit_form(self, obj=None):
         form = super().edit_form(obj)
         form.id_categoria.choices = [(c.id_categoria, c.nom_categoria) for c in Categoria.query.all()]
         return form
 
 
-# Inicializar Flask-Admin
+# Flask-Admin
 admin = Admin(app, name='Panel Admin', template_mode='bootstrap3', index_view=MyAdminIndexView())
 admin.add_view(UsuarioAdmin(Usuario, db.session))
 admin.add_view(SecureModelView(Categoria, db.session))
 admin.add_view(ProductoAdmin(Producto, db.session))
 admin.add_link(MenuLink(name='Cerrar sesión', category='', url='/admin/logout'))
-
-
-# ===== RUTAS =====
 
 @app.route('/status', methods=['GET'])
 def service_status():
@@ -151,10 +134,7 @@ def listar_productos():
             "id": p.id,
             "nombre": p.nombre,
             "descripcion": p.descripcion,
-            "precio": p.precio,
-            "id_categoria": p.id_categoria,
-            "imagen": p.imagen,
-            "categoria": p.categoria.nom_categoria if p.categoria else None
+            "precio": p.precio
         }
         for p in productos
     ])
@@ -176,21 +156,21 @@ def agregar_producto():
 def home():
     return render_template("index.html")
 
-@app.route("/noticias")
-def noticias():
-    return render_template("reuniones.html")
+@app.route("/inicio/")
+def inicio():
+    return render_template("index.html")
 
-@app.route("/ingreso")
-def ingreso():
-    return render_template("ingreso.html")
+@app.route("/eventos")
+def eventos():
+    return render_template("plantilla1.html")
 
 @app.route("/comunicados")
 def comunicados():
     return render_template("comunicados.html")
 
-@app.route("/eventos")
-def eventos():
-    return render_template("eventos.html")
+@app.route("/ingreso")
+def ingreso():
+    return render_template("ingreso.html")
 
 @app.route('/ventas')
 def ventas():
@@ -203,22 +183,23 @@ def admin_login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+
         user = Usuario.query.filter_by(username=username, password=password).first()
+
         if user:
             session['admin_logged_in'] = True
             return redirect('/admin')
         else:
             error = 'Usuario o contraseña incorrectos'
-    return render_template('admin_login.html', error=error)
-
+    
+    return render_template('admin_login.html')
 @app.route('/admin/logout')
 def admin_logout():
     session.pop('admin_logged_in', None)
     return redirect(url_for('admin_login'))
 
 
-# ===== INICIO DE LA APLICACIÓN =====
-
+    
 if __name__ == '__main__':
     wait_for_postgres()
     with app.app_context():
