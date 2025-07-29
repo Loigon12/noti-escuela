@@ -324,7 +324,7 @@
     <a href="{{ url_for('ingreso') }}">Ingreso</a>
   </nav>
 
-  <!-- Contenido principal -->
+   <!-- Contenido principal -->
   <main class="container">
 
     <article class="card">
@@ -334,22 +334,20 @@
       <p><strong>Lugar:</strong> Auditorio principal, Escuela Primaria Benito Juárez</p>
       <p>Se discutirá el calendario escolar del segundo semestre y se darán a conocer las actividades extracurriculares disponibles para el año entrante.</p>
 
-      <div class="comments-section">
+      <div class="comments-section" id="comments-container">
         <h3>💬 Comentarios</h3>
 
+        <!-- Comentarios existentes cargados desde Flask -->
+        {% for comentario in comentarios %}
         <div class="comment">
-          <strong>María López</strong>
-          <small>Hace 2 horas</small>
-          <p>Gracias por la información, muy bien organizado todo.</p>
+          <strong>{{ comentario.nombre }}</strong>
+          <small>{{ comentario.fecha.strftime('%d/%m/%Y %H:%M') }}</small>
+          <p>{{ comentario.texto }}</p>
         </div>
+        {% endfor %}
 
-        <div class="comment">
-          <strong>Carlos Mendoza</strong>
-          <small>Hace 5 horas</small>
-          <p>¿Habrá opción de participar en línea?</p>
-        </div>
-
-        <form class="comment-form">
+        <!-- Formulario para nuevo comentario -->
+        <form class="comment-form" id="comment-form">
           <textarea id="comment" rows="4" placeholder="Escribe tu comentario..." required></textarea>
           <button type="submit">Enviar comentario</button>
         </form>
@@ -369,5 +367,53 @@
     <p>Conectando familias, docentes y comunidad educativa.</p>
   </footer>
 
+  <!-- Script para comentarios en vivo -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("comment-form");
+      const textarea = document.getElementById("comment");
+      const commentsContainer = document.getElementById("comments-container");
+
+      // Nombre del usuario (puedes cambiarlo si tienes autenticación)
+      const userName = "Usuario Anónimo"; // Cambia esto por session['nombre'] si usas login
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const commentText = textarea.value.trim();
+        if (!commentText) return;
+
+        // Enviar al servidor Flask
+        fetch("/agregar_comentario", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            nombre: userName,
+            texto: commentText
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Crear nuevo elemento de comentario
+          const commentDiv = document.createElement("div");
+          commentDiv.classList.add("comment");
+          commentDiv.innerHTML = `
+            <strong>${data.nombre}</strong>
+            <small>${data.tiempo}</small>
+            <p>${data.texto}</p>
+          `;
+          // Insertar arriba del formulario
+          commentsContainer.insertBefore(commentDiv, form);
+          // Limpiar el textarea
+          textarea.value = "";
+        })
+        .catch(err => {
+          alert("Error al enviar el comentario. Intenta de nuevo.");
+        });
+      });
+    });
+  </script>
+  
 </body>
 </html>

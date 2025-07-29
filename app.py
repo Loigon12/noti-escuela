@@ -8,6 +8,8 @@ from flask_admin.menu import MenuLink
 from flask_admin.form import ImageUploadField
 import os
 from wtforms.fields import SelectField
+from datetime import datetime
+from models import db, Comentario
 import time
 import psycopg2
 
@@ -176,6 +178,42 @@ def ingreso():
 def reuniones():
     return render_template("reuniones.html")
 
+# API para agregar comentario
+@app.route('/agregar_comentario', methods=['POST'])
+def agregar_comentario():
+    data = request.get_json()
+    nombre = data.get('nombre', 'Anónimo')
+    texto = data.get('texto', '').strip()
+
+    if not texto:
+        return jsonify({'error': 'El comentario no puede estar vacío'}), 400
+
+    nuevo_comentario = Comentario(nombre=nombre, texto=texto)
+    db.session.add(nuevo_comentario)
+    db.session.commit()
+
+    # Devolver el comentario con ID y fecha formateada
+    return jsonify({
+        'id': nuevo_comentario.id,
+        'nombre': nuevo_comentario.nombre,
+        'texto': nuevo_comentario.texto,
+        'tiempo': format_time_ago(nuevo_comentario.fecha)
+    }), 201
+
+# Formatear tiempo: "Hace 5 minutos", "Hace 1 hora", etc.
+def format_time_ago(fecha):
+    now = datetime.now()
+    diff = now - fecha
+
+    seconds = diff.total_seconds()
+    if seconds < 60:
+        return "Hace unos segundos"
+    elif seconds < 3600:
+        return f"Hace {int(seconds // 60)} minutos"
+    elif seconds < 86400:
+        return f"Hace {int(seconds // 3600)} horas"
+    else:
+        return f"Hace {int(seconds // 86400)} días"
 
 @app.route('/ventas')
 def ventas():

@@ -42,37 +42,6 @@
       animation: fadeInUp 0.8s ease-out;
     }
 
-    .tabs {
-      display: flex;
-      border-bottom: 1px solid var(--gray);
-    }
-
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 1rem;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-      position: relative;
-      color: var(--primary);
-    }
-
-    .tab.active {
-      background-color: var(--primary);
-      color: var(--white);
-    }
-
-    .tab.active::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      height: 3px;
-      width: 100%;
-      background-color: var(--white);
-    }
-
     .form-container {
       padding: 2rem 1.5rem;
     }
@@ -81,6 +50,7 @@
       font-size: 1.5rem;
       margin-bottom: 1.5rem;
       color: var(--primary-dark);
+      text-align: center;
     }
 
     .form-group {
@@ -124,16 +94,19 @@
       background-color: var(--primary-dark);
     }
 
-    .toggle-link {
+    .message {
       text-align: center;
       margin-top: 1rem;
       font-size: 0.95rem;
+      min-height: 1.2rem;
     }
 
-    .toggle-link a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: bold;
+    .error {
+      color: #e53e3e;
+    }
+
+    .success {
+      color: #38a169;
     }
 
     @keyframes fadeInUp {
@@ -146,103 +119,68 @@
         transform: translateY(0);
       }
     }
-
-    @media (max-width: 500px) {
-      .tabs {
-        flex-direction: column;
-      }
-
-      .tab {
-        border-bottom: 1px solid var(--gray);
-      }
-
-      .tab:last-child {
-        border-bottom: none;
-      }
-    }
   </style>
 </head>
 <body>
 
   <div class="auth-container">
-    <div class="tabs">
-      <div class="tab active" onclick="switchTab(this, 'login')">Iniciar Sesión</div>
-      <div class="tab" onclick="switchTab(this, 'register')">Registrarse</div>
-    </div>
-
-    <div class="form-container" id="login">
-      <h2>Inicia sesión</h2>
-      <form>
+    <div class="form-container">
+      <h2>Iniciar Sesión</h2>
+      <form id="login-form">
         <div class="form-group">
-          <label for="email-login">Correo electrónico</label>
-          <input type="email" id="email-login" placeholder="tu@correo.com" required />
+          <label for="username">Nombre de usuario</label>
+          <input type="text" id="username" placeholder="Ingresa tu usuario" required />
         </div>
         <div class="form-group">
-          <label for="password-login">Contraseña</label>
-          <input type="password" id="password-login" placeholder="••••••••" required />
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" placeholder="••••••••" required />
         </div>
         <div class="form-group">
           <button type="submit">Entrar</button>
         </div>
+        <div class="message" id="message"></div>
       </form>
-      <div class="toggle-link">
-        ¿No tienes cuenta? <a href="#" onclick="switchToRegister()">Regístrate</a>
-      </div>
-    </div>
-
-    <div class="form-container" id="register" style="display:none;">
-      <h2>Crea tu cuenta</h2>
-      <form>
-        <div class="form-group">
-          <label for="name-register">Nombre completo</label>
-          <input type="text" id="name-register" placeholder="Nombre Apellido" required />
-        </div>
-        <div class="form-group">
-          <label for="email-register">Correo electrónico</label>
-          <input type="email" id="email-register" placeholder="tu@correo.com" required />
-        </div>
-        <div class="form-group">
-          <label for="password-register">Contraseña</label>
-          <input type="password" id="password-register" placeholder="••••••••" required />
-        </div>
-        <div class="form-group">
-          <label for="role-register">Rol</label>
-          <select id="role-register" required>
-            <option value="">Selecciona tu rol</option>
-            <option value="padre">Padre de familia</option>
-            <option value="docente">Docente</option>
-            <option value="administrativo">Administrativo</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <button type="submit">Registrarse</button>
-        </div>
-      </form>
-      <div class="toggle-link">
-        ¿Ya tienes cuenta? <a href="#" onclick="switchToLogin()">Inicia sesión</a>
-      </div>
     </div>
   </div>
 
   <script>
-    function switchTab(tab, id) {
-      const tabs = document.querySelectorAll('.tab');
-      const forms = document.querySelectorAll('.form-container');
+    document.getElementById("login-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
 
-      tabs.forEach(t => t.classList.remove('active'));
-      forms.forEach(f => f.style.display = 'none');
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
 
-      tab.classList.add('active');
-      document.getElementById(id).style.display = 'block';
-    }
+      const messageEl = document.getElementById("message");
+      messageEl.textContent = "";
+      messageEl.className = "message";
 
-    function switchToRegister() {
-      switchTab(document.querySelectorAll('.tab')[1], 'register');
-    }
+      try {
+        const response = await fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ username, password })
+        });
 
-    function switchToLogin() {
-      switchTab(document.querySelectorAll('.tab')[0], 'login');
-    }
+        const data = await response.json();
+
+        if (data.success) {
+          messageEl.className = "message success";
+          messageEl.textContent = data.message;
+          // Redirigir tras 1 segundo
+          setTimeout(() => {
+            window.location.href = "/dashboard";
+          }, 1000);
+        } else {
+          messageEl.className = "message error";
+          messageEl.textContent = data.message;
+        }
+      } catch (err) {
+        messageEl.className = "message error";
+        messageEl.textContent = "Error de conexión. Intenta de nuevo.";
+      }
+    });
   </script>
 
 </body>
