@@ -7,7 +7,7 @@
 
   <!-- Google Fonts: Poppins para elegancia y legibilidad -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     :root {
       --primary: #3b82f6;
@@ -202,51 +202,80 @@
       font-weight: 600;
     }
 
-    /* Tarjetas */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2.2rem;
-    }
+   /* === Estilos para Información Destacada === */
 
-    .card {
-      background-color: var(--white);
-      border-radius: 14px;
-      box-shadow: var(--shadow-md);
-      padding: 1.8rem;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--gray);
-    }
+.card-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
 
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 6px;
-      background: linear-gradient(to right, var(--primary), var(--primary-dark));
-    }
+.card:hover .card-icon {
+  transform: scale(1.1);
+}
 
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--accent);
-    }
+.card-date,
+.card-time {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin: 0.4rem 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-    .card h3 {
-      font-size: 1.3rem;
-      color: var(--primary-dark);
-      margin-bottom: 0.6rem;
-      font-weight: 600;
-    }
+.card-date i,
+.card-time i {
+  width: 16px;
+  text-align: center;
+}
 
-    .card p {
-      font-size: 0.95rem;
-      color: var(--text-light);
-      line-height: 1.6;
-    }
+.card-badge {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin: 0.8rem 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2);
+}
+
+.card-tag {
+  display: inline-block;
+  background: #f59e0b;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin: 0.8rem 0 1rem 0;
+  box-shadow: 0 2px 5px rgba(245, 158, 11, 0.2);
+}
+
+.card-btn {
+  display: inline-block;
+  background-color: var(--white);
+  color: var(--primary-dark);
+  padding: 0.6rem 1.2rem;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  margin-top: 0.5rem;
+}
+
+.card-btn:hover {
+  background-color: var(--primary);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+}
 
     /* Footer mejorado */
     footer {
@@ -351,28 +380,61 @@
     </div>
   </section>
 
-  <!-- Información Destacada -->
-  <section class="section">
-    <h2>Información Destacada</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Próxima reunión de padres</h3>
-        <p>Viernes, 20 de Diciembre de 2024 | 15:00 hrs</p>
+ <!-- Información Destacada -->
+<section class="section">
+  <h2>Información Destacada</h2>
+  <div class="cards">
+
+    <!-- Tarjeta: Reunión de Padres -->
+    <div class="card">
+      <div class="card-icon" style="color: #3b82f6;">
+        <i class="fas fa-users"></i>
       </div>
-      <div class="card">
-        <h3>Calendario escolar 2025</h3>
-        <p>Descarga el calendario actualizado con fechas importantes del ciclo escolar.</p>
-      </div>
-      <div class="card">
-        <h3>Actividades extracurriculares</h3>
-        <p>Conoce las nuevas actividades disponibles para los estudiantes este semestre.</p>
-      </div>
-      <div class="card">
-        <h3>Comunicados recientes</h3>
-        <p>Revisa los últimos anuncios importantes emitidos por la dirección del plantel.</p>
-      </div>
+      <h3>Próxima reunión de padres</h3>
+      <p class="card-date">
+        <i class="far fa-calendar-alt"></i> Viernes, 20 de Diciembre de 2024
+      </p>
+      <p class="card-time">
+        <i class="far fa-clock"></i> 15:00 hrs
+      </p>
+      <div class="card-badge">Importante</div>
+      <a href="{{ url_for('eventos') }}" class="card-btn">Ver detalles</a>
     </div>
-  </section>
+
+    <!-- Tarjeta: Calendario Escolar -->
+    <div class="card">
+      <div class="card-icon" style="color: #10b981;">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+      <h3>Calendario escolar 2025</h3>
+      <p>Descarga el calendario actualizado con feriados, exámenes, vacaciones y eventos institucionales.</p>
+      <a href="#" class="card-btn">Descargar PDF</a>
+    </div>
+
+    <!-- Tarjeta: Actividades Extracurriculares -->
+    <div class="card">
+      <div class="card-icon" style="color: #f59e0b;">
+        <i class="fas fa-football-ball"></i>
+      </div>
+      <h3>Actividades extracurriculares</h3>
+      <p>Nuevos talleres disponibles: Robótica, Música, Deportes y Arte. Inscripciones abiertas.</p>
+      <div class="card-tag">¡Nuevos talleres!</div>
+      <a href="{{ url_for('actividades') }}" class="card-btn">Inscribirse</a>
+    </div>
+
+    <!-- Tarjeta: Comunicados Recientes -->
+    <div class="card">
+      <div class="card-icon" style="color: #ef4444;">
+        <i class="fas fa-bullhorn"></i>
+      </div>
+      <h3>Comunicados recientes</h3>
+      <p>Últimos anuncios oficiales: Cambios en horarios, protocolos de seguridad y más.</p>
+      <div class="card-badge" style="background: #ef4444;">Nuevo</div>
+      <a href="{{ url_for('comunicados') }}" class="card-btn">Leer comunicados</a>
+    </div>
+
+  </div>
+</section>
 
   <!-- Eventos Próximos -->
   <section class="section">
