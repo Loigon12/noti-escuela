@@ -528,10 +528,10 @@
     </div>
     <div class="menu">
       <a href="{{ url_for('home') }}">Inicio</a>
-      <a href="{{ url_for('reuniones') }}">Noticias</a>
+      <a href="{{ url_for('reunion') }}">Noticias</a>
       <a href="{{ url_for('eventos') }}">Eventos</a>
       <a href="{{ url_for('comunicados') }}">Comunicados</a>
-      <a href="#">Ingreso</a>
+      <a href="{{ url_for('ingreso') }}">Ingreso</a>
     </div>
   </nav>
 
@@ -586,7 +586,7 @@
       <h3>Actividades extracurriculares</h3>
       <p>Nuevos talleres disponibles: Robótica, Música, Deportes y Arte. Inscripciones abiertas.</p>
       <div class="card-tag">¡Nuevos talleres!</div>
-      <a href="{{ url_for('comunicados') }}" class="card-btn">Inscribirse</a>
+      <a href="#" class="card-btn">Inscribirse</a>
     </div>
 
     <!-- Tarjeta: Comunicados Recientes -->
