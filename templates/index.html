@@ -203,7 +203,174 @@
     }
 
    /* === Estilos para Información Destacada === */
+/* === Sección de Eventos Próximos - Diseño Original === */
+.section-events {
+  padding: 6rem 2rem;
+  background-color: #ffffff;
+  margin-top: 2rem;
+}
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.events-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.events-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+}
+
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  padding: 1.4rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--gray);
+}
+
+.event-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+  border-color: #dbeafe;
+}
+
+/* Fecha destacada */
+.event-date-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: var(--primary-dark);
+  border-radius: 14px;
+  font-weight: 700;
+  margin-right: 1.5rem;
+  flex-shrink: 0;
+}
+
+.event-date-box.highlight {
+  background: linear-gradient(135deg, #f87171, #fb923c);
+  color: white;
+}
+
+.event-day {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.event-month {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Detalles del evento */
+.event-details {
+  flex: 1;
+}
+
+.event-details h3 {
+  font-size: 1.25rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.event-details p {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin: 0.3rem 0;
+}
+
+.event-details p i {
+  width: 18px;
+  color: var(--primary);
+}
+
+/* Categoría del evento */
+.event-category {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: #dbeafe;
+  color: var(--primary-dark);
+  margin-bottom: 0.8rem;
+}
+
+.event-category.sports {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.event-category.workshop {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+/* Botón "Ver más" */
+.event-more {
+  background: var(--primary);
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.3s ease;
+}
+
+.event-more:hover {
+  background: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .event-item {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .event-date-box {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .event-more {
+    align-self: flex-start;
+    margin-top: 1rem;
+  }
+
+  .events-title {
+    font-size: 2rem;
+  }
+}
 .card-icon {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -211,7 +378,6 @@
 }
 
 .card-icon:hover {
- 
   transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.26, 1.55);
 }
 
@@ -437,24 +603,62 @@
   </div>
 </section>
 
-  <!-- Eventos Próximos -->
-  <section class="section">
-    <h2>Eventos Próximos</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Jornada de convivencia</h3>
-        <p>Lunes, 13 de Enero de 2025 | 09:00 hrs</p>
+ <!-- Eventos Próximos -->
+<section class="section-events">
+  <div class="container">
+    <h2 class="events-title">Próximos Eventos</h2>
+    <p class="events-subtitle">Mantente informado sobre actividades, talleres y fechas importantes de la comunidad escolar.</p>
+
+    <div class="events-list">
+
+      <!-- Evento 1 -->
+      <div class="event-item">
+        <div class="event-date-box">
+          <span class="event-day">12</span>
+          <span class="event-month">Mar</span>
+        </div>
+        <div class="event-details">
+          <span class="event-category">Académico</span>
+          <h3>Entrega de boletines del primer periodo</h3>
+          <p><i class="far fa-clock"></i> 08:00 - 12:00 hrs</p>
+          <p><i class="fas fa-map-marker-alt"></i> Salón de usos múltiples</p>
+        </div>
+        <a href="#" class="event-more">Ver más</a>
       </div>
-      <div class="card">
-        <h3>Exámenes del primer parcial</h3>
-        <p>Martes, 21 de Enero de 2025 | Inicio de evaluaciones</p>
+
+      <!-- Evento 2 -->
+      <div class="event-item">
+        <div class="event-date-box highlight">
+          <span class="event-day">18</span>
+          <span class="event-month">Mar</span>
+        </div>
+        <div class="event-details">
+          <span class="event-category sports">Deportes</span>
+          <h3>Juegos intercursos 2025</h3>
+          <p><i class="far fa-clock"></i> 09:00 - 16:00 hrs</p>
+          <p><i class="fas fa-map-marker-alt"></i> Canchas deportivas</p>
+        </div>
+        <a href="#" class="event-more">Inscripciones</a>
       </div>
-      <div class="card">
-        <h3>Día del maestro</h3>
-        <p>Miércoles, 15 de Mayo de 2025 | Celebración especial</p>
+
+      <!-- Evento 3 -->
+      <div class="event-item">
+        <div class="event-date-box">
+          <span class="event-day">25</span>
+          <span class="event-month">Mar</span>
+        </div>
+        <div class="event-details">
+          <span class="event-category workshop">Taller</span>
+          <h3>Taller de robótica para primaria</h3>
+          <p><i class="far fa-clock"></i> 14:00 - 16:00 hrs</p>
+          <p><i class="fas fa-map-marker-alt"></i> Laboratorio de Tecnología</p>
+        </div>
+        <a href="#" class="event-more">Reservar cupo</a>
       </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- Footer -->
   <footer>
