@@ -75,7 +75,7 @@ class Usuario(db.Model):
     nom_usuario = db.Column(db.String(50), nullable=False)
     ape_usuario = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(50), unique=True, nullable=False)  # usuario de login
-    password = db.Column(db.String(128), nullable=False)
+    pasword = db.Column(db.String(128), nullable=False)
     rol = db.Column(db.String(50))  # Opciones: 'admin', 'docente', 'padre', etc.
     
 class Comentario(db.Model):
