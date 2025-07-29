@@ -184,6 +184,10 @@ def noticias():
 def ingreso():
     return render_template("ingreso.html")
 
+@app.route("/comunicados")
+def comunicados():
+    return render_template("comunicados.html")
+
 @app.route("/eventos")
 def eventos():
     return render_template("eventos.html")
