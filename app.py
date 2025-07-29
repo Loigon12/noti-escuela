@@ -76,6 +76,14 @@ class Usuario(db.Model):
     ape_usuario = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(50), unique=True, nullable=False)  # usuario de login
     password = db.Column(db.String(128), nullable=False)
+    rol = db.Column(db.String(50))  # Opciones: 'admin', 'docente', 'padre', etc.
+    
+class Comentario(db.Model):
+    __tablename__ = 'comentarios'
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100), nullable=False)
+    texto = db.Column(db.Text, nullable=False)
+    fecha = db.Column(db.DateTime, default=datetime.utcnow)
     
 class ProductoAdmin(ModelView):
     # Personaliza el campo imagen para que permita subir archivos
@@ -115,6 +123,8 @@ class ProductoAdmin(ModelView):
         form = super().edit_form(obj)
         form.id_categoria.choices = [(c.id_categoria, c.nom_categoria) for c in Categoria.query.all()]
         return form
+    
+    
 
 
 # Flask-Admin
@@ -158,6 +168,10 @@ def agregar_producto():
 def home():
     return render_template("index.html")
 
+@app.route('/ingreso', methods=['GET'])
+def ingreso():
+    return render_template('ingreso.html')
+
 @app.route("/inicio/")
 def inicio():
     return render_template("index.html")
@@ -198,7 +212,7 @@ def agregar_comentario():
 
 # Formatear tiempo: "Hace 5 minutos", "Hace 1 hora", etc.
 def format_time_ago(fecha):
-    now = datetime.now()
+    now = datetime.utcnow()
     diff = now - fecha
 
     seconds = diff.total_seconds()
