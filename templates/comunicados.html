@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* === Sección de Comunicados === */
+.announcements-section {
+  padding: 5rem 2rem;
+  background-color: #ffffff;
+  margin-top: 2rem;
+}
+
+.announcements-section .container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.announcements-section h2 {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: #64748b;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+}
+
+.announcements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.announcement-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  padding: 1.6rem;
+  border: 1px solid #e2e8f0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.announcement-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.announcement-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.announcement-type {
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.announcement-type.event {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.announcement-type.urgent {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.announcement-type.info {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.announcement-date {
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.announcement-card h3 {
+  font-size: 1.3rem;
+  color: #1e293b;
+  margin-bottom: 0.8rem;
+}
+
+.announcement-card p {
+  color: #64748b;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.announcement-details {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+}
+
+.announcement-details li {
+  color: #475569;
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+}
+
+.announcement-details li i {
+  width: 18px;
+  color: #3b82f6;
+}
+
+/* Confirmación */
+.confirmation {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-confirm {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-confirm:hover {
+  background: #2563eb;
+}
+
+.confirmation-status {
+  font-size: 0.9rem;
+  color: #065f46;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Estado visible */
+.confirmation-status.visible {
+  opacity: 1;
+}
+</style>
+<body>
+    <!-- Sección de Comunicados -->
+<section class="announcements-section">
+  <div class="container">
+    <h2>Comunicados Escolares</h2>
+    <p class="section-subtitle">Información oficial y relevante para padres, estudiantes y docentes.</p>
+
+    <div class="announcements-list">
+
+      <!-- Comunicado 1 -->
+      <div class="announcement-card" data-id="1">
+        <div class="announcement-header">
+          <span class="announcement-type event">Evento Escolar</span>
+          <span class="announcement-date">15 Mar 2025</span>
+        </div>
+        <h3>Jornada de Convivencia Familiar</h3>
+        <p>Se invita a todas las familias a participar en la jornada de integración familiar, que se realizará en el parque educativo.</p>
+        <ul class="announcement-details">
+          <li><i class="far fa-clock"></i> 9:00 AM - 2:00 PM</li>
+          <li><i class="fas fa-map-marker-alt"></i> Parque Educativo "Los Almendros"</li>
+          <li><i class="fas fa-users"></i> Todos los grados</li>
+        </ul>
+
+        <div class="confirmation">
+          <button class="btn-confirm" onclick="confirmReceipt(1)">
+            <i class="fas fa-check-circle"></i> Confirmar recepción
+          </button>
+          <span class="confirmation-status" id="status-1"></span>
+        </div>
+      </div>
+
+      <!-- Comunicado 2 -->
+      <div class="announcement-card" data-id="2">
+        <div class="announcement-header">
+          <span class="announcement-type urgent">Urgente</span>
+          <span class="announcement-date">10 Mar 2025</span>
+        </div>
+        <h3>Cambio en horario de entrega de boletines</h3>
+        <p>Por disposición del consejo académico, la entrega de boletines se reprograma para el viernes 14 de marzo.</p>
+        <ul class="announcement-details">
+          <li><i class="far fa-clock"></i> 7:30 AM - 11:30 AM</li>
+          <li><i class="fas fa-building"></i> Salón de Usos Múltiples</li>
+        </ul>
+
+        <div class="confirmation">
+          <button class="btn-confirm" onclick="confirmReceipt(2)">
+            <i class="fas fa-check-circle"></i> Confirmar recepción
+          </button>
+          <span class="confirmation-status" id="status-2"></span>
+        </div>
+      </div>
+
+      <!-- Comunicado 3 -->
+      <div class="announcement-card" data-id="3">
+        <div class="announcement-header">
+          <span class="announcement-type info">Información</span>
+          <span class="announcement-date">8 Mar 2025</span>
+        </div>
+        <h3>Taller de educación emocional para padres</h3>
+        <p>Únete al taller gratuito sobre manejo de emociones en la adolescencia, dirigido a padres de grado 6° a 11°.</p>
+        <ul class="announcement-details">
+          <li><i class="far fa-clock"></i> Miércoles, 20 Mar | 6:00 PM</li>
+          <li><i class="fas fa-laptop"></i> Virtual (enlace será enviado)</li>
+        </ul>
+
+        <div class="confirmation">
+          <button class="btn-confirm" onclick="confirmReceipt(3)">
+            <i class="fas fa-check-circle"></i> Confirmar recepción
+          </button>
+          <span class="confirmation-status" id="status-3"></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+// Simulación de confirmación de lectura
+function confirmReceipt(id) {
+  const button = event.target.tagName === 'BUTTON' ? event.target : event.target.closest('button');
+  const status = document.getElementById(`status-${id}`);
+
+  // Cambiar estado visual
+  status.textContent = "✔ Confirmado";
+  status.classList.add('visible');
+
+  // Desactivar botón
+  button.disabled = true;
+  button.innerHTML = '<i class="fas fa-check"></i> Recibido';
+  button.style.opacity = '0.7';
+  button.style.cursor = 'not-allowed';
+
+  // Enviar confirmación al backend (ver sección siguiente)
+  sendConfirmationToBackend(id, 'usuario_123', 'comunicado');
+}
+</script>
+</body>
+</html>
