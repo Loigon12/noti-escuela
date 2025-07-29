@@ -53,7 +53,7 @@ class SecureModelView(ModelView):
 
 # Modelos
 class UsuarioAdmin(ModelView):
-    form_columns = ['nom_usuario', 'ape_usuario', 'username', 'password']
+    form_columns = ['nom_usuario', 'ape_usuario', 'username', 'pasword']
 class Categoria(db.Model):
     __tablename__ = 'categorias'
     id_categoria = db.Column(db.Integer, primary_key=True)
@@ -235,7 +235,7 @@ def admin_login():
     error = None
     if request.method == 'POST':
         username = request.form['username']
-        pasword = request.form['password']
+        pasword = request.form['pasword']
 
         user = Usuario.query.filter_by(username=username, pasword=pasword).first()
 
@@ -264,7 +264,7 @@ def procesar_login():
     password_hash = pasword  # Solo para pruebas. Usa hash en producción.
 
     # Buscar usuario
-    usuario = Usuario.query.filter_by(username=username, password=pasword).first()
+    usuario = Usuario.query.filter_by(username=username, pasword=pasword).first()
 
     if usuario:
         return jsonify({'success': True, 'message': 'Inicio de sesión exitoso', 'rol': usuario.rol})
