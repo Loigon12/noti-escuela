@@ -530,7 +530,7 @@
       <a href="{{ url_for('home') }}">Inicio</a>
       <a href="{{ url_for('noticias') }}">Noticias</a>
       <a href="{{ url_for('eventos') }}">Eventos</a>
-      <a href="#">Comunicados</a>
+      <a href="{{ url_for('comunicados') }}">Comunicados</a>
       <a href="{{ url_for('ingreso') }}">Ingreso</a>
     </div>
   </nav>
@@ -597,7 +597,7 @@
       <h3>Comunicados recientes</h3>
       <p>Últimos anuncios oficiales: Cambios en horarios, protocolos de seguridad y más.</p>
       <div class="card-badge" style="background: #ef4444;">Nuevo</div>
-      <a href="#" class="card-btn">Leer comunicados</a>
+      <a href="{{ url_for('comunicados') }}" class="card-btn">Leer comunicados</a>
     </div>
 
   </div>
