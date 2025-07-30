@@ -53,7 +53,7 @@ class SecureModelView(ModelView):
 
 # Modelos
 class UsuarioAdmin(ModelView):
-    form_columns = ['nom_usuario', 'ape_usuario', 'username', 'pasword']
+    form_columns = ['nom_usuario', 'ape_usuario', 'username', 'password']
 class Categoria(db.Model):
     __tablename__ = 'categorias'
     id_categoria = db.Column(db.Integer, primary_key=True)
@@ -75,7 +75,7 @@ class Usuario(db.Model):
     nom_usuario = db.Column(db.String(50), nullable=False)
     ape_usuario = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(50), unique=True, nullable=False)  # usuario de login
-    pasword = db.Column(db.String(128), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
     rol = db.Column(db.String(50))  # Opciones: 'admin', 'docente', 'padre', etc.
     
 class Comentario(db.Model):
@@ -235,9 +235,9 @@ def admin_login():
     error = None
     if request.method == 'POST':
         username = request.form['username']
-        pasword = request.form['pasword']
+        password = request.form['password']
 
-        user = Usuario.query.filter_by(username=username, pasword=pasword).first()
+        user = Usuario.query.filter_by(username=username, password=password).first()
 
         if user:
             session['admin_logged_in'] = True
@@ -257,14 +257,14 @@ def admin_logout():
 def procesar_login():
     data = request.get_json()
     username = data.get('username')
-    pasword = data.get('pasword')
+    password = data.get('password')
 
     # Opcional: hash de la contraseña (si la guardaste con hash)
-    # password_hash = hashlib.sha256(password.encode()).hexdigest()
-    password_hash = pasword  # Solo para pruebas. Usa hash en producción.
+    # password_hash = hashlib.sha256(pasword.encode()).hexdigest()
+    password_hash = password  # Solo para pruebas. Usa hash en producción.
 
     # Buscar usuario
-    usuario = Usuario.query.filter_by(username=username, pasword=pasword).first()
+    usuario = Usuario.query.filter_by(username=username, password=password).first()
 
     if usuario:
         return jsonify({'success': True, 'message': 'Inicio de sesión exitoso', 'rol': usuario.rol})

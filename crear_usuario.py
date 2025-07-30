@@ -14,7 +14,7 @@ with app.app_context():
             nom_usuario="Admin",
             ape_usuario="General",
             username="admin",
-            pasword="admin123"  # Contraseña en texto plano
+            password="admin123"  # Contraseña en texto plano
         )
         
         db.session.add(nuevo_usuario)
