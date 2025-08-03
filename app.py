@@ -127,11 +127,12 @@ class ProductoAdmin(ModelView):
     
 
 
+
 # Flask-Admin
-admin = Admin(app, name='Panel Admin', template_mode='bootstrap3', index_view=MyAdminIndexView())
-admin.add_view(UsuarioAdmin(Usuario, db.session))
-admin.add_view(SecureModelView(Categoria, db.session))
-admin.add_view(ProductoAdmin(Producto, db.session))
+admin = Admin(app, name='Panel Admin', template_mode='bootstrap3')
+admin.add_view(ModelView(Usuario, db.session))
+admin.add_view(ModelView(Categoria, db.session))
+admin.add_view(ModelView(Producto, db.session))
 admin.add_link(MenuLink(name='Cerrar sesión', category='', url='/admin/logout'))
 
 @app.route('/status', methods=['GET'])
