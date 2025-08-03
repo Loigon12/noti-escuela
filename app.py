@@ -230,8 +230,8 @@ def ventas():
     productos = Producto.query.all()
     return render_template('ventas.html', productos=productos)
 
-@app.route('/admin/login', methods=['GET', 'POST'])
-def admin_login():
+#@app.route('/admin/login', methods=['GET', 'POST'])
+#def admin_login():
     error = None
     if request.method == 'POST':
         username = request.form['username']
@@ -246,8 +246,8 @@ def admin_login():
             error = 'Usuario o contraseña incorrectos'
     
     return render_template('admin_login.html')
-@app.route('/admin/logout')
-def admin_logout():
+#@app.route('/admin/logout')
+#def admin_logout():
     session.pop('admin_logged_in', None)
     return redirect(url_for('admin_login'))
 
