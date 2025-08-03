@@ -133,7 +133,7 @@ admin = Admin(app, name='Panel Admin', template_mode='bootstrap3')
 admin.add_view(ModelView(Usuario, db.session))
 admin.add_view(ModelView(Categoria, db.session))
 admin.add_view(ModelView(Producto, db.session))
-admin.add_link(MenuLink(name='Cerrar sesión', category='', url='/admin/logout'))
+admin.add_link(MenuLink(name='Cerrar sesión', category='', url='/admin/login'))
 
 @app.route('/status', methods=['GET'])
 def service_status():

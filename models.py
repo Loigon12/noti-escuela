@@ -23,7 +23,7 @@ class Usuario(db.Model):
     ape_usuario = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(50), unique=True, nullable=False)  # usuario de login
     password = db.Column(db.String(128), nullable=False)
-    rol = db.Column(db.String(50))
+    
     
 class Comentario(db.Model):
     __tablename__ = 'comentarios'
