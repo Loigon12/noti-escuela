@@ -15,20 +15,22 @@ import psycopg2
 
 # Crear la app Flask
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY', 'PODIUM2025')
-database_url = os.getenv('DATABASE_URL')
-if not database_url:
-    # Fallback local
-    database_url = 'postgresql://postgres:PODIUM2025@localhost/Tienda1'
+# === CONFIGURACIÓN DE BASE DE DATOS ===
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'PODIUM2025')
 
-# 2) Configura SQLAlchemy
+# Obtener DATABASE_URL del entorno
+database_url = os.getenv('DATABASE_URL')
+
+if not database_url:
+    # Fallback local (solo para desarrollo)
+    database_url = 'postgresql://postgres:PODIUM2025@localhost/Tienda1'
+else:
+    # Asegurarse de que tenga sslmode=require para Render
+    if 'sslmode' not in database_url:
+        database_url += '?sslmode=require'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# 3) Fuerza SSL/TLS (ojo: necesario solo si tu URL no incluye sslmode)
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'connect_args': {'sslmode': 'disable'}
-}
 
 db = SQLAlchemy(app)
 
