@@ -157,15 +157,42 @@ def listar_productos():
 @app.route("/agregar", methods=["POST"])
 def agregar_producto():
     data = request.get_json()
+
+    # Validación de campos requeridos
+    nombre = data.get("nombre")
+    descripcion = data.get("descripcion")
+    precio = data.get("precio")
+    id_categoria = data.get("id_categoria")
+
+    if not all([nombre, precio, id_categoria]):
+        return jsonify({"error": "Faltan campos requeridos: nombre, precio o id_categoria"}), 400
+
+    try:
+        precio = float(precio)
+        id_categoria = int(id_categoria)
+    except (ValueError, TypeError):
+        return jsonify({"error": "Precio o id_categoria deben ser números válidos"}), 400
+
+    # Verificar que la categoría exista
+    categoria = Categoria.query.get(id_categoria)
+    if not categoria:
+        return jsonify({"error": "La categoría seleccionada no existe"}), 400
+
+    # Crear producto
     nuevo = Producto(
-        nombre=data["nombre"],
-        descripcion=data["descripcion"],
-        precio=data["precio"],
-        id_categoria=data["id_categoria"]
+        nombre=nombre,
+        descripcion=descripcion,
+        precio=precio,
+        id_categoria=id_categoria
     )
-    db.session.add(nuevo)
-    db.session.commit()
-    return jsonify({"message": "Producto agregado correctamente."}), 201
+
+    try:
+        db.session.add(nuevo)
+        db.session.commit()
+        return jsonify({"message": "Producto agregado correctamente.", "id": nuevo.id}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al guardar en la base de datos", "detalle": str(e)}), 500
 
 @app.route("/")
 def home():
