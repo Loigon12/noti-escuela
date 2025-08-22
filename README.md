@@ -3,6 +3,8 @@ Aplicación desarrollada como proyecto final en el curso que tome acerca de la A
 
 Se utilizo la plataforma PaaS (Render) para desplegar el la aplicación web.
 
+link de la aplicación web en render: https://noti-escuela.onrender.com
+
 
 
 
